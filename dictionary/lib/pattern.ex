@@ -1,5 +1,5 @@
 defmodule Pattern do
-  def two({a, b}) do
+  def swap({a, b}) do
     {b, a}
   end
 
