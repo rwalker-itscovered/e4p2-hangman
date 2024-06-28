@@ -1,25 +1,23 @@
 defmodule Hangman do
-  def use_titlecase do
-    "fred is a good guy"
-    |> Sentence.titlecase()
-  end
+
+  alias Hangman.Impl.Game
 
   @type state :: :initializing | :won | :lost | :good_guess | :bad_guess | :already_used
 
-  @type game :: any
+  @opaque game :: Game.t
 
   @type tally :: %{
           turns_left: integer,
           game_state: state,
-          letters: list(String.t()),
-          used: list(String.t())
+          letters: list(String.t),
+          used: list(String.t)
         }
 
   @spec new_game() :: game
-  def new_game do
-  end
+  defdelegate new_game(), to: Game, as: :init_game
 
-  @spec make_move(game, String.t()) :: {game, tally}
+
+  @spec make_move(game, String.t) :: {game, tally}
   def make_move(_game, _guess) do
   end
 end
