@@ -1,18 +1,6 @@
 defmodule TextClient do
-  @moduledoc """
-  Documentation for `TextClient`.
-  """
+  @spec start() :: :ok
 
-  @doc """
-  Hello world.
+  defdelegate start(), to: TextClient.Impl.Player
 
-  ## Examples
-
-      iex> TextClient.hello()
-      :world
-
-  """
-  def hello do
-    :world
-  end
 end
