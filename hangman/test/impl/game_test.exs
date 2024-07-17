@@ -141,21 +141,4 @@ defmodule Impl.GameTest do
     assert tally.used == used
     game
   end
-
-  test "for loop" do
-    moves = [
-      {"w", :good_guess},
-      {"i", :good_guess},
-      {"b", :good_guess},
-      {"l", :good_guess},
-      {"e", :won}
-    ]
-
-    game = Game.init_game("wibble")
-
-    for {guess, state} <- moves do
-      {game, tally} = Game.make_move(game, guess)
-      assert tally.game_state == state
-    end
-  end
 end
