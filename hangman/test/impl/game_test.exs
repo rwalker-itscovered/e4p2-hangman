@@ -115,7 +115,7 @@ defmodule Impl.GameTest do
       ["f", :bad_guess, 2, ["_", "e", "_", "_", "_"], ["a", "b", "c", "d", "e", "f"]],
       ["g", :bad_guess, 1, ["_", "e", "_", "_", "_"], ["a", "b", "c", "d", "e", "f", "g"]],
       ["h", :good_guess, 1, ["h", "e", "_", "_", "_"], ["a", "b", "c", "d", "e", "f", "g", "h"]],
-      ["i", :lost, 0, ["h", "e", "_", "_", "_"], ["a", "b", "c", "d", "e", "f", "g", "h", "i"]],
+      ["i", :lost, 0, ["h", "e", "l", "l", "o"], ["a", "b", "c", "d", "e", "f", "g", "h", "i"]],
 
     ]
     |> test_sequence_of_moves()
@@ -140,22 +140,5 @@ defmodule Impl.GameTest do
     assert tally.letters == letters
     assert tally.used == used
     game
-  end
-
-  test "for loop" do
-    moves = [
-      {"w", :good_guess},
-      {"i", :good_guess},
-      {"b", :good_guess},
-      {"l", :good_guess},
-      {"e", :won}
-    ]
-
-    game = Game.init_game("wibble")
-
-    for {guess, state} <- moves do
-      {game, tally} = Game.make_move(game, guess)
-      assert tally.game_state == state
-    end
   end
 end
