@@ -14,21 +14,51 @@ defmodule TextClient.Impl.Player do
 
   # @type state :: :initializing | :won | :lost | :good_guess | :bad_guess | :already_used | :unacceptable_guess
 
-
   @spec interact(state) :: :ok
-  def interact({_game, _tally = %{ game_state: :won }}) do
-    IO.puts "Congrats, you won the game!"
+  def interact({_game, tally = %{game_state: :won}}) do
+    IO.puts("Congrats, you won the game! You had #{tally.turns_left} turns left")
   end
 
-  def interact({_game, tally = %{ game_state: :lost }}) do
-    IO.puts "Oh rats, you lost the game! The word was #{tally.letters |> Enum.join}"
+  def interact({_game, tally = %{game_state: :lost}}) do
+    IO.puts("Oh rats, you lost the game! The word was #{tally.letters |> Enum.join()}")
   end
 
   def interact({game, tally}) do
-    # feedback on current state
-    # display current word
-    # get next guess
-    # make move
-    interact({game, tally})
+    IO.puts(feedback_for(tally))
+    IO.puts(current_word(tally))
+
+    Hangman.make_move(game, get_guess())
+    |> interact()
+  end
+
+  # @type state ::  :initializing | :good_guess | :bad_guess | :already_used | :unacceptable_guess
+
+  def feedback_for(tally = %{game_state: :initializing}) do
+    [
+      "\nWelcome to the Hangman Game.\n",
+      "----------------------------\n",
+      "I'm thinking of a #{tally.letters |> length} letter word\n"
+    ]
+  end
+
+  def feedback_for(%{game_state: :good_guess}), do: "Good guess!"
+  def feedback_for(%{game_state: :bad_guess}), do: "Oh no, that wasn't right!"
+  def feedback_for(%{game_state: :unacceptable_guess}), do: "Please only use lowercase letters"
+
+  def feedback_for(%{game_state: :already_used}),
+    do: "You already used that one, I won't count it this time..."
+
+  def current_word(tally) do
+    [
+      "Word so far: #{tally.letters |> Enum.join(" ")}",
+      "   turns left: #{tally.turns_left |> to_string}",
+      "   letters used: #{tally.used |> Enum.join(",")}\n"
+    ]
+  end
+
+  def get_guess do
+    IO.gets("Next Letter: ")
+    |> String.trim
+    |> String.downcase
   end
 end
