@@ -3,7 +3,8 @@ defmodule Dictionary.Impl.WordList do
 
   @spec start() :: Type.word_list()
   def start do
-    "assets/words.txt"
+    "../../assets/words.txt"
+    |> Path.expand(__DIR__)
     |> File.read!()
     |> String.split(~r/\n/, trim: true)
   end
